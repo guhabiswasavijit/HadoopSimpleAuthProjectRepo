@@ -1,0 +1,93 @@
+version: "3"
+
+services:
+  hadoop_base_image:
+    build: ./base
+    image: avijit1979/hadoop_3.3.1
+    env_file: kerberos.env
+  namenode:
+    build: ./namenode
+    image: avijit1979/hadoop_3.3.1_namenode
+    env_file: kerberos.env
+    container_name: namenode
+    hostname: namenode
+    restart: on-failure
+    ports:
+      - 8020:8020
+      - 50070:50070
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=SevenOnIt
+    depends_on:
+      - hadoop_base_image
+  datanode:
+    build: ./datanode
+    image: avijit1979/hadoop_3.3.1_datanode
+    env_file: kerberos.env
+    container_name: datanode
+    hostname: datanode
+    restart: on-failure
+    ports:
+      - 50010:50010
+      - 50075:50075
+      - 50020:50020
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070"
+    depends_on:
+      - hadoop_base_image
+  spring-boot-client:
+    build: ../../HadoopProjects/SpringBootHdfsRepo/webhdfs
+    image: avijit1979/hadoop_3.3.1_spring-boot-client
+    container_name: spring-boot-client
+    hostname: spring-boot-client
+    restart: on-failure
+    ports:
+      - 9093:9093
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070"
+    depends_on:
+      - namenode
+volumes:
+  hadoop_namenode:
+  hadoop_datanode:
+  # resourcemanager:
+  #   build: ./resourcemanager
+  #   image: avijit1979/hadoop_3.3.1_resourcemanager
+  #   container_name: resourcemanager
+  #   restart: on-failure
+  #   ports:
+  #     - 8088:8088
+  #   environment:
+  #     SERVICE_PRECONDITION: "namenode:50020 namenode:50090 datanode:50075"
+  #   depends_on:
+  #     - hadoop_base_image
+  # nodemanager:
+  #   build: ./nodemanager
+  #   image: avijit1979/hadoop_3.3.1_nodemanager
+  #   container_name: nodemanager
+  #   restart: on-failure
+  #   ports:
+  #     - 8042:8042
+  #   environment:
+  #     SERVICE_PRECONDITION: "namenode:50020 namenode:50090 datanode:50075 resourcemanager:8088"
+  #   depends_on:
+  #     - hadoop_base_image
+  # historyserver:
+  #   build: ./historyserver
+  #   image: avijit1979/hadoop_3.3.1_historyserver
+  #   container_name: historyserver
+  #   restart: on-failure
+  #   ports:
+  #     - 8188:8188
+  #   environment:
+  #     SERVICE_PRECONDITION: "namenode:50020 namenode:50090 datanode:50075 resourcemanager:8088"
+  #   volumes:
+  #     - hadoop_historyserver:/hadoop/yarn/timeline
+  #   depends_on:
+  #     - hadoop_base_image
+  
+
+  #hadoop_historyserver:
