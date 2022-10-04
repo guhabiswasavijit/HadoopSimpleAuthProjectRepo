@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM rtfpessoa/ubuntu-jdk8:2.0.40
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -27,7 +27,7 @@ RUN mkdir -p /opt/hadoop/logs
 RUN echo "\n export HDFS_NAMENODE_USER=hdfs \n" >> etc/hadoop/hadoop-env.sh &&\
     echo "\n export HDFS_DATANODE_USER=hdfs \n" >> etc/hadoop/hadoop-env.sh &&\
 	echo "\n export HDFS_SECONDARYNAMENODE_USER=hdfs \n" >> etc/hadoop/hadoop-env.sh &&\
-	echo "\n export JAVA_HOME=/usr/local/openjdk-11 \n" >> etc/hadoop/hadoop-env.sh &&\
+	echo "\n export JAVA_HOME=/usr/lib/jvm/java-8-oracle \n" >> etc/hadoop/hadoop-env.sh &&\
 	echo "\n export HADOOP_HOME=/opt/hadoop \n" >> etc/hadoop/hadoop-env.sh 
 	
 # Configure ssh client

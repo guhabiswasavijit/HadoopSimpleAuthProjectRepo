@@ -38,6 +38,41 @@ services:
       SERVICE_PRECONDITION: "namenode:50070"
     depends_on:
       - hadoop_base_image
+  zookeeper-server:
+    image: avijit1979/kafka-server:0.0.0
+    command: 
+        - /bin/bash
+        - -c
+        - |
+          init.sh
+          zookeeper-server-start.sh /opt/config/zookeeper.properties
+    container_name: zookeeper-server
+    hostname: zookeeper-server
+    restart: on-failure
+  mysql-server:
+    image: avijit1979/mysql:ubuntu
+    container_name: mysql-server
+    hostname: mysql-server
+    restart: on-failure
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_volume:/var/lib/mysql
+  hive-server:
+    build: ./hive
+    image: avijit1979/hadoop_3.3.1_hive
+    env_file: kerberos.env
+    container_name: hive-server
+    hostname: hive-server
+    restart: on-failure
+    ports:
+      - 10000:10000
+      - 10001:10001
+      - 10002:10002
+    environment:
+      SERVICE_PRECONDITION: "mysql-server:3306"
+    depends_on:
+      - mysql-server
   spring-boot-client:
     build: ../../HadoopProjects/SpringBootHdfsRepo/webhdfs
     image: avijit1979/hadoop_3.3.1_spring-boot-client
@@ -53,6 +88,7 @@ services:
 volumes:
   hadoop_namenode:
   hadoop_datanode:
+  mysql_volume:
   # resourcemanager:
   #   build: ./resourcemanager
   #   image: avijit1979/hadoop_3.3.1_resourcemanager
