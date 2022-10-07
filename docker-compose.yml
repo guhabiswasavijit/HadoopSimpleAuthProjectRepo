@@ -73,6 +73,23 @@ services:
       SERVICE_PRECONDITION: "mysql-server:3306"
     depends_on:
       - mysql-server
+  hbase-server:
+    build: ./hbase
+    image: avijit1979/hadoop_3.3.1_hbase
+    env_file: kerberos.env
+    container_name: hbase-server
+    hostname: hbase-server
+    restart: on-failure
+    ports:
+      - 16000:16000
+      - 8082:8082
+      - 8081:8081
+      - 9090:9090
+      - 9094:9094
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070"
+    depends_on:
+      - hadoop_base_image
   spring-boot-client:
     build: ../../HadoopProjects/SpringBootHdfsRepo/webhdfs
     image: avijit1979/hadoop_3.3.1_spring-boot-client

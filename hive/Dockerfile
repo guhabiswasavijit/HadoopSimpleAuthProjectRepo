@@ -27,7 +27,7 @@ ADD conf/hive-env.sh $HIVE_HOME/conf
 ADD conf/hive-log4j2.properties $HIVE_HOME/conf
 ADD conf/beeline-log4j2.properties $HIVE_HOME/conf
 ADD conf/hive-exec-log4j2.properties $HIVE_HOME/conf
-ADD lib/mysql-connector-java-8.0.27.jar $HIVE_HOME/lib/mysql-connector-java-8.0.27.jar
+ADD lib/mysql-connector-java-8.0.28.jar $HIVE_HOME/lib/mysql-connector-java-8.0.28.jar
 
 
 WORKDIR /opt/hive/bin
