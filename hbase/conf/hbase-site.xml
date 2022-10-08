@@ -19,7 +19,7 @@
   </property>
   <property>
     <name>hbase.tmp.dir</name>
-    <value>/tmp</value>
+    <value>/opt/hbase/tmp</value>
   </property>
   <property>
     <name>hbase.unsafe.stream.capability.enforce</name>
@@ -33,4 +33,8 @@
     <name>hbase.master.info.port</name>
     <value>16010</value>
   </property>
-</configuration>
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>/opt/hbase/zookeeper/data</value>
+  </property>
+ </configuration>

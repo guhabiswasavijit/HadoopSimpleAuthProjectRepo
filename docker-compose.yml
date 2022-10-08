@@ -86,6 +86,8 @@ services:
       - 8081:8081
       - 9090:9090
       - 9094:9094
+    volumes:
+      - hbase_volume:/opt/hbase/zookeeper/data
     environment:
       SERVICE_PRECONDITION: "namenode:50070"
     depends_on:
@@ -106,6 +108,7 @@ volumes:
   hadoop_namenode:
   hadoop_datanode:
   mysql_volume:
+  hbase_volume:
   # resourcemanager:
   #   build: ./resourcemanager
   #   image: avijit1979/hadoop_3.3.1_resourcemanager

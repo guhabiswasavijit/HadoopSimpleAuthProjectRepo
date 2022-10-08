@@ -35,9 +35,9 @@ RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && \
     chmod 0600 ~/.ssh/authorized_keys
 
-RUN echo "\nHost 0.0.0.0\n" >> ~/.ssh/config && \
-    echo "   StrictHostKeyChecking no\n" >> ~/.ssh/config && \
-    echo "   UserKnownHostsFile=/dev/null\n" >> ~/.ssh/config
+RUN echo "\nHost *\n" >> ~/.ssh/config && \
+    echo "   AddKeysToAgent yes\n" >> ~/.ssh/config && \
+    echo "   IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
 
 # Disable sshd authentication
 RUN echo "root:root" | chpasswd
